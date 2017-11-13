@@ -20,15 +20,15 @@ describe('Testing the ability to fill in a color', () => {
   });
 
   describe('fillinate function',() => {
-    test('should change the color of the entered pixel',() => {
+    test('should change the color of the entered pixel and all surrounding pixels',() => {
     // for this test, a pixel is an array of 3 positive integers: [ r, g, b]
     // and an image is a 2 dimensional collection of pixels [row-coordinate][col-coordinate][pixel rgb values]
 
     // create our test image
     var inputImage = [], expectedImage = [], i, j;
-    var maxNumRows = 2, maxNumCols = 2;
+    var maxNumRows = 5, maxNumCols = 5;
 
-    // fill the inputImage  with white pixels
+    // fill the inputImage with black pixels
     // fill the expectedImage with "MediumOrchid" colored pixels [0xBA,0x55,0xD3].
     for (i = 0; i < maxNumRows; i++) {
       inputImage[i] = [];
@@ -43,4 +43,33 @@ describe('Testing the ability to fill in a color', () => {
     });
   });
 
+
+  describe('Check that fillinate function stays within expected bounds',() => {
+    test('should change the color of the pixels contiguous from the starting pixel',() => {
+    // for this test, a pixel is an array of 3 positive integers: [ r, g, b]
+    // and an image is a 2 dimensional collection of pixels [row-coordinate][col-coordinate][pixel rgb values]
+
+    // create our test image
+    var inputImage = [], expectedImage = [], i, j;
+    var maxNumRows = 7, maxNumCols = 7;
+
+    // fill the inputImage with white pixels on the outer edge and black pixels inside
+    // fill the expectedImage with white pixels on the outer edge and "MediumOrchid" colored pixels [0xBA,0x55,0xD3].
+    for (i = 0; i < maxNumRows; i++) {
+      inputImage[i] = [];
+      expectedImage[i] = [];
+      for (j = 0; j < maxNumCols; j++) {
+        if (i === 0 || i === maxNumRows -1 || j === 0 || j === maxNumCols) {
+          inputImage[i][j] = [0xFF, 0xFF, 0xFF];
+          expectedImage[i][j] = [0xFF, 0xFF, 0xFF];
+        } else {
+          inputImage[i][j] = [0,0,0];
+          expectedImage[i][j] = [0xBA,0x55,0xD3];
+        }
+      }
+    }
+      fillinate(inputImage, 2, 2, [0,0,0], [0xBA,0x55,0xD3]);
+      expect(inputImage).toEqual(expectedImage);
+    });
+  });
 })
